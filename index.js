@@ -1,14 +1,19 @@
 const http = require('http');
-
-const host = 'localhost';
-const port = 8000;
+const url = require('url');
 
 const server = http.createServer((req, res) => {
-    // Replace this code by your own
-    res.writeHead(200);
-    res.end('Hello from Server!!!!');
+    const queryObject = url.parse(req.url, true).query;
+    
+    res.writeHead(200, { 'Content-Type': 'text/plain' });
+
+    if (queryObject.name) {
+        res.end(`Hello ${queryObject.name}`);
+    } else {
+        res.end('You should provide name parameter');
+    }
 });
 
-server.listen(port, host, () => {
-    console.log(`Server is running on http://${host}:${port}`);
+const PORT = 3000;
+server.listen(PORT, () => {
+    console.log(`Server is running on http://localhost:${PORT}`);
 });
